@@ -288,14 +288,13 @@
                     if(count === 0){
                         op[next].textContent="";
                         op[next].disabled=true;
-                        bt.style.color = white;
                         de++;
                         showzero(next);
                     }
                     else{
                         op[next].textContent = count;
                         op[next].disabled = true;
-                        bt.style.color = white;
+                        op[next].style.color = white;
                         de++;
                         if(de === goal){
                             stoptimer();
@@ -375,7 +374,6 @@
                                 if(count === 0){
                                     bt.textContent="";
                                     bt.disabled=true;
-                                    bt.style.color = white;
                                     de++;
                                     showzero(i)
                                 }
