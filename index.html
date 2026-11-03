@@ -4,30 +4,17 @@
     <meta charset ="UTF-8">
     <title>踩地雷的啦！</title>
     <style>
-        #map-viewport {
-            width: 100%;
-            height: 70vh;
-            overflow: auto;
-            overscroll-behavior: contain;
+        #map{
+            display:grid;
+            grid-template-columns:repeat(9,70px);
+            gap:2px;
         }
-
-        #map-space {
-            position: relative;
-        }
-
-        #map {
-            display: grid;
-            position: relative; /* 不再使用 absolute */
-            transform-origin: top left;
-            gap: 2px;
-        }
-
-        #map button {
-            background-color: rgb(150,200,50);
-            width: 70px;
-            height: 70px;
-            font-size: 15px;
-            color: black;
+        #map button{
+            background-color:rgb(150,200,50);
+            width:70px;
+            height:70px;
+            font-size:15px;
+            color:black;
         }
         #map button:disabled{
             background-color: rgb(197, 197, 179);
@@ -93,12 +80,8 @@
         <button id="mid">中級</button>
         <button id="hard">高級</button>
     </div>
-
-    <div id="mapviewport">
-       <div id="mapspace">
-           <div id="map"></div>
-       </div>
-    </div>
+    
+    <div id="map"></div>
 
     <div id="bt">
         <button id = "flag">我要插旗子</button>
@@ -118,13 +101,6 @@
         let s = 0;
         let m = 0;
         let chizi = 0;
-        let scale = 1;
-        let startDistance = 0;
-        let startScale = 1;
-        let startCenterX = 0;
-        let startCenterY = 0;
-        let contentX = 0;
-        let contentY = 0;
 
         const mine = [];
         const map = document.getElementById("map");
@@ -141,8 +117,6 @@
         const kazo = document.getElementById("kazo");
         const chizimon = document.getElementById("chizi");
         const jilaimon = document.getElementById("jilai");
-        const mapViewport = document.getElementById("map-viewport");
-        const mapSpace = document.getElementById("map-space");
         
         map.style.display = "none";
         flag.style.display = "none";
@@ -375,64 +349,6 @@
                 b.style.color = "purple";
             }
         }
-
-        function updateMapSize() {
-            mapSpace.style.width = map.offsetWidth * scale + "px";
-            mapSpace.style.height = map.offsetHeight * scale + "px";
-
-            map.style.transform = `scale(${scale})`;
-        }
-
-        function getDistance(touches) {
-            const dx = touches[0].clientX - touches[1].clientX;
-            const dy = touches[0].clientY - touches[1].clientY;
-
-            return Math.sqrt(dx * dx + dy * dy);
-        }
-
-
-        function getCenter(touches) {
-            return {
-                x: (touches[0].clientX + touches[1].clientX) / 2,
-                y: (touches[0].clientY + touches[1].clientY) / 2
-            };
-        }
-
-        mapViewport.addEventListener("touchstart", function(event) {
-            if (event.touches.length === 2) {
-                event.preventDefault();
-
-                startDistance = getDistance(event.touches);
-                startScale = scale;
-
-            const center = getCenter(event.touches);
-
-            const rect = mapViewport.getBoundingClientRect();
-
-            startCenterX = center.x - rect.left;
-            startCenterY = center.y - rect.top;
-
-            contentX = (mapViewport.scrollLeft + startCenterX) / scale;
-            contentY = (mapViewport.scrollTop + startCenterY) / scale;
-            }
-        }, { passive: false });
-
-        mapViewport.addEventListener("touchmove", function(event) {
-            if (event.touches.length === 2) {
-                event.preventDefault();
-
-                const newDistance = getDistance(event.touches);
-
-                scale = startScale * (newDistance / startDistance);
-
-                scale = Math.max(0.5, Math.min(scale, 2));
-
-                updateMapSize();
-
-                mapViewport.scrollLeft = contentX * scale - startCenterX;
-                mapViewport.scrollTop = contentY * scale - startCenterY;
-            }
-        }, { passive: false });
 
         flag.addEventListener("click",function(){
             if(flg === false){
