@@ -17,7 +17,7 @@
             color:black;
         }
         #map button:disabled{
-            background-color: rgb(150,150,100);
+            background-color: rgb(197, 197, 179);
         }
         #top{
             font-size: 50px;
@@ -279,7 +279,7 @@
 
                     const next = l*mapwidth + h;
 
-                    if(op[next].disabled || mine.includes(next)){
+                    if(op[next].disabled || mine.includes(next) || op[next].classList.contains("al")){
                         continue;
                     }
 
@@ -289,21 +289,20 @@
                         op[next].textContent="";
                         op[next].disabled=true;
                         de++;
-                        showzero(next);
+                        if(de === goal){
+                            win();
+                        }
+                        else{
+                            showzero(next);
+                        }
                     }
                     else{
                         op[next].textContent = count;
                         op[next].disabled = true;
-                        op[next].style.color = white;
+                        Numbercolor(count,op[next]);
                         de++;
                         if(de === goal){
-                            stoptimer();
-                            kazo.style.display = "none";
-                            flag.style.display = "none";
-                            wl.textContent = "全部找到了!!";
-                            again.style.display = "block";
-                            jigan.textContent = "你花了" + m + "分" + s + "秒就找完地雷了 真棒";
-                            again.addEventListener("click", function(){location.reload()});
+                            win();
                         }
                     }
                 }
@@ -321,6 +320,34 @@
 
         function wait(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function win(){
+            stoptimer();
+            kazo.style.display = "none";
+            flag.style.display = "none";
+            wl.textContent = "全部找到了!!";
+            again.style.display = "block";
+            jigan.textContent = "你花了" + m + "分" + s + "秒就找完地雷了 真棒";
+            again.addEventListener("click", function(){location.reload()});
+        }
+
+        function Numbercolor(a,b){
+            if(a === 1){
+                b.style.color = "blue";
+            }
+            else if(a === 2){
+                b.style.color = "green";
+            }
+            else if(a === 3){
+                b.style.color = "red";
+            }
+            else if(a === 4){
+                b.style.color = "darkblue";
+            }
+            else if(a === 5){
+                b.style.color = "purple";
+            }
         }
 
         flag.addEventListener("click",function(){
@@ -375,21 +402,20 @@
                                     bt.textContent="";
                                     bt.disabled=true;
                                     de++;
-                                    showzero(i);
+                                    if(de === goal){
+                                        win();
+                                    }
+                                    else{
+                                        showzero(i);
+                                    }
                                 }
                                 else{
                                     bt.textContent=count;
                                     bt.disabled=true;
-                                    bt.style.color = white;
+                                    Numbercolor(count,bt);
                                     de++;
                                     if(de === goal){
-                                        stoptimer();
-                                        kazo.style.display = "none";
-                                        flag.style.display = "none";
-                                        wl.textContent = "全部找到了!!";
-                                        again.style.display = "block";
-                                        jigan.textContent = "你花了" + m + "分" + s + "秒就找完地雷了 真棒";
-                                        again.addEventListener("click", function(){location.reload()});
+                                        win();
                                     }
                                 }
                             }
